@@ -1,5 +1,16 @@
 .react-select__value-container.react-select__value-container--has-value {
   display: flex !important;
+  width: 100px;
+}
+
+.react-select__control {
+  width: 240px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.react-select__menu {
+  font-size: 13px;
 }
 
 .react-select__placeholder {

@@ -18,6 +18,7 @@ export interface TaskInput {
   description: string;
   status: string;
   taskId?: string;
+  taskData?: any;
 }
 
 export interface Task {
@@ -29,10 +30,6 @@ export interface Task {
   status: string;
   createDate?: string;
   userId: string;
-}
-
-export interface TaskResponse {
-  [taskId: string]: Task[];
 }
 
 export type HashMap = { [key: string]: string };

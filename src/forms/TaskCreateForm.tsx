@@ -11,8 +11,9 @@ import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { showSuccessToast } from '../utils/toast';
 import { queryClient } from '../utils/queryClient';
 import { SelectBox } from '../components/select/SelectBox';
-import { useAuth } from '../hooks/useAuth';
-
+import AppContext from '../context/AppContext';
+import FlexWrapper from '../components/styled/flex/FlexWrapper';
+import FlexItem from '../components/styled/flex/FlexItem';
 interface ITaskFormProps {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -27,13 +28,13 @@ const options: IStatus[] = [
   { value: 'completed', label: 'Completed' }
 ];
 
-const TaskCreateForm: React.FC<ITaskFormProps> = ({ setModalOpen }) => {
-  const [userDetails, setUserDetails] = useAuth();
+const TaskCreateForm: React.FC<ITaskFormProps> = () => {
+  const { setModalOpen } = useContext(AppContext);
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-    setValue,
     control
   } = useForm<TaskInput>({
     defaultValues: {
@@ -43,25 +44,22 @@ const TaskCreateForm: React.FC<ITaskFormProps> = ({ setModalOpen }) => {
     }
   });
 
-  const { mutate: createTaskMutate } = useMutation(createTask, {
+  const { mutate } = useMutation(createTask, {
     onSuccess: () => {
       showSuccessToast('Task created successfully', 'task-created');
+      setModalOpen(false);
       queryClient.invalidateQueries(['user-tasks']);
     }
   });
 
   const onSubmit = (taskInput: TaskInput) => {
-    if (!userDetails) {
-      return;
-    }
     const data = {
       ...taskInput,
-      userId: userDetails.username
+      userId: '293af5ec-5031-704f-f75a-366657c6fb7f'
     };
-
-    createTaskMutate(data);
-    setModalOpen(false);
+    mutate(data);
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ width: '70%' }}>
       <Stack>
@@ -96,7 +94,9 @@ const TaskCreateForm: React.FC<ITaskFormProps> = ({ setModalOpen }) => {
           render={({ field: { value, onChange, ref } }) => {
             return (
               <>
-                <label style={{ marginBottom: '-10px' }}>Status</label>
+                <label style={{ marginBottom: '-10px', fontSize: '13px' }}>
+                  Status
+                </label>
                 <SelectBox
                   classNamePrefix="react-select"
                   onChange={(selected) => onChange(selected?.value)}
@@ -110,8 +110,12 @@ const TaskCreateForm: React.FC<ITaskFormProps> = ({ setModalOpen }) => {
           rules={{ required: true }}
         />
       </Stack>
-      <Stack margin="30px 10px">
-        <Button type="submit" displayLabel="Create Task" />
+      <Stack margin="40px 10px">
+        <FlexWrapper flexDirection="row">
+          <FlexItem justifyContent="center" alignItems="center">
+            <Button displayLabel="Create" />
+          </FlexItem>
+        </FlexWrapper>
       </Stack>
       <DevTool control={control} />
     </form>

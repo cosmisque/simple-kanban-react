@@ -3,26 +3,19 @@ import { useForm, Controller, Control, FieldValues } from 'react-hook-form';
 import Input from '../components/styled/input/Input';
 import { useMutation } from '@tanstack/react-query';
 import { DevTool } from '@hookform/devtools';
-import { Task, TaskAction, TaskInput } from '../types';
-import { createTask, updateTask } from '../api/taskApi';
+import { TaskInput } from '../types';
+import { createTask } from '../api/taskApi';
 import { Button } from '../components/styled/button/Button';
 import Stack from '../components/styled/stack/Stack';
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import { useContext } from 'react';
 import AppContext from '../context/AppContext';
 import { showSuccessToast } from '../utils/toast';
 import { queryClient } from '../utils/queryClient';
 import { SelectBox } from '../components/select/SelectBox';
+import FlexWrapper from '../components/styled/flex/FlexWrapper';
+import FlexItem from '../components/styled/flex/FlexItem';
 
-interface ITaskFormProps {
-  taskData?: Task;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
-}
+interface ITaskFormProps {}
 interface IStatus {
   value: string;
   label: string;
@@ -34,16 +27,13 @@ const options: IStatus[] = [
   { value: 'completed', label: 'Completed' }
 ];
 
-const TaskUpdateForm: React.FC<ITaskFormProps> = ({
-  taskData,
-  setModalOpen
-}) => {
-  //   console.log('update task form render');
+const TaskForm: React.FC<ITaskFormProps> = () => {
+  const { setModalOpen } = useContext(AppContext);
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-    setValue,
     control
   } = useForm<TaskInput>({
     defaultValues: {
@@ -53,36 +43,20 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({
     }
   });
 
-  const { mutate: updateTaskMutate } = useMutation(updateTask, {
+  const { mutate } = useMutation(createTask, {
     onSuccess: () => {
-      showSuccessToast('Task successfully updated', 'task-updated');
+      showSuccessToast('Task created successfully', 'task-created');
+      setModalOpen(false);
       queryClient.invalidateQueries(['user-tasks']);
     }
   });
 
-  useEffect(() => {
-    if (!taskData) {
-      return;
-    }
-    const { name, description, status } = taskData;
-    setValue('name', name);
-    setValue('description', description);
-    setValue('status', status);
-  }, [taskData]);
-
   const onSubmit = (taskInput: TaskInput) => {
-    if (!taskData) {
-      return;
-    }
     const data = {
       ...taskInput,
       userId: '293af5ec-5031-704f-f75a-366657c6fb7f'
     };
-
-    const { taskId, userId } = taskData;
-    const updatedTask = { ...data, userId };
-    // updateTaskMutate({ taskData: updatedTask, taskId });
-    // setModalOpen(false);
+    mutate(data);
   };
 
   return (
@@ -119,7 +93,9 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({
           render={({ field: { value, onChange, ref } }) => {
             return (
               <>
-                <label style={{ marginBottom: '-10px' }}>Status</label>
+                <label style={{ marginBottom: '-10px', fontSize: '13px' }}>
+                  Status
+                </label>
                 <SelectBox
                   classNamePrefix="react-select"
                   onChange={(selected) => onChange(selected?.value)}
@@ -133,12 +109,16 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({
           rules={{ required: true }}
         />
       </Stack>
-      <Stack margin="30px 10px">
-        <Button type="submit" displayLabel="Update Task" />
+      <Stack margin="40px 10px">
+        <FlexWrapper flexDirection="row">
+          <FlexItem justifyContent="center" alignItems="center">
+            <Button displayLabel="Create" />
+          </FlexItem>
+        </FlexWrapper>
       </Stack>
       <DevTool control={control} />
     </form>
   );
 };
 
-export default TaskUpdateForm;
+export default TaskForm;

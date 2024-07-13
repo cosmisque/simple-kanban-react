@@ -31,5 +31,5 @@ export const ErrorMessage = styled.span`
 
 export const Label = styled.label`
   margin-bottom: 5px;
-  font-size: 15px;
+  font-size: 13px;
 `;

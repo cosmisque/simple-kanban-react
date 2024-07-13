@@ -3,10 +3,10 @@ import { StyledButton, ButtonProps } from './button.style';
 export const Button: React.FC<ButtonProps> = ({
   displayLabel,
   icon,
-  ...rest
+  ...props
 }) => {
   return (
-    <StyledButton {...rest}>
+    <StyledButton {...props}>
       {displayLabel}
       {icon && icon}
     </StyledButton>

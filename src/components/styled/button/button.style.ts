@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   icon?: React.ReactNode;
   displayLabel?: string;
+  onClick?: () => void;
 }
 
 export const StyledButton = styled.button<ButtonProps>`
@@ -11,6 +12,6 @@ export const StyledButton = styled.button<ButtonProps>`
   border-radius: 5px;
   background-color: ${(props) => props.color ?? props.theme.colors.green[0]};
   color: white;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
 `;

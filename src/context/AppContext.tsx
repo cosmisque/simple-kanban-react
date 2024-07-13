@@ -1,4 +1,5 @@
 import React, { type ReactNode, createContext, useState } from 'react';
+import { User } from '../types';
 
 export interface IApp {
   navBarHidden: boolean;

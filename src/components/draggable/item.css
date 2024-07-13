@@ -1,0 +1,8 @@
+.removeIcon span {
+  visibility: hidden;
+}
+
+.removeIcon:hover span {
+  visibility: visible;
+  cursor: pointer;
+}

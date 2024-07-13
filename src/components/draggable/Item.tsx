@@ -1,72 +1,46 @@
-import { Trash, Pencil } from 'tabler-icons-react';
+import { IconX } from '@tabler/icons-react';
 import FlexItem from '../styled/flex/FlexItem.style';
 import FlexWrapper from '../styled/flex/FlexWrapper';
 import { useMutation } from '@tanstack/react-query';
 import { deleteTask } from '../../api/taskApi';
 import { showSuccessToast } from '../../utils/toast';
 import { queryClient } from '../../utils/queryClient';
-
-import Modal from '../styled/modal/Modal';
-import { Task, TaskAction } from '../../types';
-import TaskUpdateForm from '../../forms/TaskUpdateForm';
-import { useContext, useEffect, useState } from 'react';
-import AppContext from '../../context/AppContext';
-
+import './item.css';
 interface ItemProps {
   id: string;
-  task?: Task;
+  description?: string;
 }
 
-export const Item: React.FC<ItemProps> = ({ id, task }) => {
-  const { mutate: deleteTaskMutate, isLoading: deleteTaskIsLoading } =
-    useMutation(deleteTask, {
-      onSuccess: () => {
-        showSuccessToast('Task successfully deleted', 'task-deleted');
-        queryClient.invalidateQueries(['user-tasks']);
-      }
-    });
-  const { modalOpen, setModalOpen } = useContext(AppContext);
+export const Item: React.FC<ItemProps> = ({ id, description }) => {
+  const { mutate, isLoading: deleteTaskIsLoading } = useMutation(deleteTask, {
+    onSuccess: () => {
+      showSuccessToast('Task successfully deleted', 'task-deleted');
+      queryClient.invalidateQueries(['user-tasks']);
+    }
+  });
 
   return (
-    <FlexWrapper
-      flexDirection="column"
-      height="50px"
-      alignItems="center"
-      justifyContent="center"
-      margin="10px 0"
-      background="#1C293C"
-    >
-      <FlexItem alignItems="flex-start">{task?.description}</FlexItem>
-      <FlexItem flexDirection="row">
-        {/* place both element at the end */}
-        <div
-          style={{
-            display: 'flex',
-            marginLeft: 'auto',
-            justifyContent: 'flex-end'
-          }}
-        >
-          <Modal
-            setModalOpen={setModalOpen}
-            modalOpen={modalOpen}
-            icon={<Pencil />}
-            content={
-              <TaskUpdateForm taskData={task} setModalOpen={setModalOpen} />
-            }
-          />
-          <div
-            style={{
-              marginTop: '10px'
-            }}
-          >
-            <Trash
-              style={{ cursor: 'pointer' }}
+    <FlexWrapper flexDirection="row" height="70px" width="95%" margin="10px">
+      <FlexItem alignItems="flex-start" margin="10px 0">
+        {description}
+      </FlexItem>
+      <FlexItem
+        alignItems="flex-end"
+        justifyContent="flex-start"
+        flex="1 0"
+        margin="3px 1px"
+      >
+        <span className="removeIcon">
+          <span>
+            <IconX
+              color="red"
+              size={20}
               onClick={(e: React.MouseEvent) => {
-                deleteTaskMutate(id);
+                mutate(id);
               }}
             />
-          </div>
-        </div>
+          </span>
+        </span>
       </FlexItem>
     </FlexWrapper>
   );
