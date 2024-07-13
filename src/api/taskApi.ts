@@ -32,7 +32,7 @@ export const updateTask = async ({
   taskId: string;
 }): Promise<TaskResponse> => {
   const response = await taskApi.put<TaskResponse>(
-    `api/v1/task/${taskData.taskId}`,
+    `api/v1/task/${taskId}`,
     taskData
   );
 

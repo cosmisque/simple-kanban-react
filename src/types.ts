@@ -17,7 +17,6 @@ export interface TaskInput {
   name: string;
   description: string;
   status: string;
-  taskId?: string;
   taskData?: any;
 }
 
