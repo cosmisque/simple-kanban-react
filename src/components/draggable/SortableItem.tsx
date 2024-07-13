@@ -13,12 +13,14 @@ export const SortableItem: React.FC<{
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition
+    transition,
+    padding: '10px 5px',
+    marginTop: '10px'
   };
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Item id={id} description={task.description} />
+      <Item id={id} task={task} />
     </div>
   );
 };

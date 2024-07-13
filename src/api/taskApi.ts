@@ -24,9 +24,13 @@ export const createTask = async (
   return response;
 };
 
-export const updateTask = async (
-  taskData: TaskInput
-): Promise<TaskResponse> => {
+export const updateTask = async ({
+  taskData,
+  taskId
+}: {
+  taskData: TaskInput;
+  taskId: string;
+}): Promise<TaskResponse> => {
   const response = await taskApi.put<TaskResponse>(
     `api/v1/task/${taskData.taskId}`,
     taskData

@@ -4,13 +4,16 @@ import { Button } from '../button/Button';
 import AppContext from '../../../context/AppContext';
 
 interface DialogProps {
-  // setOpenModal: (value: boolean) => void;
   content?: JSX.Element;
   footerDisplayLabel?: string;
+  setModalOpen: (open: boolean) => void;
 }
 
-const Dialog: React.FC<DialogProps> = ({ content, footerDisplayLabel }) => {
-  const { setModalOpen } = useContext(AppContext);
+const Dialog: React.FC<DialogProps> = ({
+  content,
+  footerDisplayLabel,
+  setModalOpen
+}) => {
   return (
     <div className="modalBackground">
       <div className="modalContainer">
@@ -34,22 +37,38 @@ interface ModalProps {
   modalLabel?: string;
   content: JSX.Element;
   icon?: JSX.Element;
+  type?: 'button' | 'icon';
   footerDisplayLabel?: string;
+  style?: React.CSSProperties;
+  modalOpen: boolean;
+  setModalOpen: (click: boolean) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ content, icon, footerDisplayLabel }) => {
-  const { modalOpen, setModalOpen } = useContext(AppContext);
+const Modal: React.FC<ModalProps> = ({
+  content,
+  icon,
+  type = 'button',
+  footerDisplayLabel,
+  modalOpen,
+  setModalOpen
+}) => {
   return (
-    <div className="Modal">
-      <Button
-        icon={icon}
-        color=""
-        onClick={() => {
-          setModalOpen(true);
-        }}
-      ></Button>
+    <div>
+      {type === 'button' && (
+        <Button
+          icon={icon}
+          color="#1a2332"
+          onClick={() => {
+            setModalOpen(true);
+          }}
+        ></Button>
+      )}
+      {type === 'icon' && (
+        <span onClick={() => setModalOpen(true)}>{icon}</span>
+      )}
       {modalOpen && (
         <Dialog
+          setModalOpen={setModalOpen}
           content={content}
           footerDisplayLabel={footerDisplayLabel ?? ''}
         />

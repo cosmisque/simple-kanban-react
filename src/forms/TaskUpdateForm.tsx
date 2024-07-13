@@ -81,8 +81,8 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({
 
     const { taskId, userId } = taskData;
     const updatedTask = { ...data, userId };
-    // updateTaskMutate({ taskData: updatedTask, taskId });
-    // setModalOpen(false);
+    updateTaskMutate({ taskData: updatedTask, taskId });
+    setModalOpen(false);
   };
 
   return (
