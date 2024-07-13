@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -7,6 +7,7 @@ import {
 import { SortableItem } from './SortableItem';
 import Container from '../styled/container/Container';
 import { Task } from '../../types';
+import AppContext from '../../context/AppContext';
 
 interface DraggableContainerProps {
   id: string;
@@ -16,9 +17,11 @@ interface DraggableContainerProps {
 export const DraggableContainer: React.FC<DraggableContainerProps> = (
   props
 ) => {
+  const { modalOpen } = useContext(AppContext);
   const { id, items } = props;
   const { setNodeRef } = useDroppable({
-    id
+    id,
+    disabled: modalOpen
   });
 
   if (!items) {
