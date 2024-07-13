@@ -31,7 +31,6 @@ interface TaskBoardProps {
 export const TaskBoard: React.FC<TaskBoardProps> = ({ tasks, keyMap }) => {
   const [items, setItems] = useState<TaskResponse>({});
   const [activeId, setActiveId] = useState<string | null>();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const taskTypeValues = Object.values(keyMap);
   const taskKeys = Object.keys(keyMap);
 
@@ -185,9 +184,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ tasks, keyMap }) => {
       <FlexWrapper>
         <Modal
           icon={<IconSquareRoundedPlus color="#7ab318" />}
-          content={<TaskCreateForm setModalOpen={setModalOpen} />}
-          setModalOpen={setModalOpen}
-          modalOpen={modalOpen}
+          content={<TaskCreateForm />}
         />
         <FlexWrapper flexDirection="row">
           {taskTypeValues.map((type, index) => (

@@ -14,9 +14,7 @@ import { SelectBox } from '../components/select/SelectBox';
 import AppContext from '../context/AppContext';
 import FlexWrapper from '../components/styled/flex/FlexWrapper';
 import FlexItem from '../components/styled/flex/FlexItem';
-interface ITaskFormProps {
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
-}
+interface ITaskFormProps {}
 interface IStatus {
   value: string;
   label: string;
@@ -29,8 +27,6 @@ const options: IStatus[] = [
 ];
 
 const TaskCreateForm: React.FC<ITaskFormProps> = () => {
-  const { setModalOpen } = useContext(AppContext);
-
   const {
     handleSubmit,
     register,
@@ -47,7 +43,6 @@ const TaskCreateForm: React.FC<ITaskFormProps> = () => {
   const { mutate } = useMutation(createTask, {
     onSuccess: () => {
       showSuccessToast('Task created successfully', 'task-created');
-      setModalOpen(false);
       queryClient.invalidateQueries(['user-tasks']);
     }
   });
@@ -110,12 +105,8 @@ const TaskCreateForm: React.FC<ITaskFormProps> = () => {
           rules={{ required: true }}
         />
       </Stack>
-      <Stack margin="40px 10px">
-        <FlexWrapper flexDirection="row">
-          <FlexItem justifyContent="center" alignItems="center">
-            <Button displayLabel="Create" />
-          </FlexItem>
-        </FlexWrapper>
+      <Stack margin="30px 10px">
+        <Button type="submit" displayLabel="Create" />
       </Stack>
       <DevTool control={control} />
     </form>

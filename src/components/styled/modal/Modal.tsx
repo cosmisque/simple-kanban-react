@@ -40,18 +40,15 @@ interface ModalProps {
   type?: 'button' | 'icon';
   footerDisplayLabel?: string;
   style?: React.CSSProperties;
-  modalOpen: boolean;
-  setModalOpen: (click: boolean) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
   content,
   icon,
   type = 'button',
-  footerDisplayLabel,
-  modalOpen,
-  setModalOpen
+  footerDisplayLabel
 }) => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div>
       {type === 'button' && (

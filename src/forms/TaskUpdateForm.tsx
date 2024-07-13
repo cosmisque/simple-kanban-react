@@ -3,8 +3,8 @@ import { useForm, Controller, Control, FieldValues } from 'react-hook-form';
 import Input from '../components/styled/input/Input';
 import { useMutation } from '@tanstack/react-query';
 import { DevTool } from '@hookform/devtools';
-import { Task, TaskAction, TaskInput } from '../types';
-import { createTask, updateTask } from '../api/taskApi';
+import { Task, TaskInput } from '../types';
+import { updateTask } from '../api/taskApi';
 import { Button } from '../components/styled/button/Button';
 import Stack from '../components/styled/stack/Stack';
 import {
@@ -21,7 +21,6 @@ import { SelectBox } from '../components/select/SelectBox';
 
 interface ITaskFormProps {
   taskData?: Task;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 interface IStatus {
   value: string;
@@ -34,11 +33,7 @@ const options: IStatus[] = [
   { value: 'completed', label: 'Completed' }
 ];
 
-const TaskUpdateForm: React.FC<ITaskFormProps> = ({
-  taskData,
-  setModalOpen
-}) => {
-  //   console.log('update task form render');
+const TaskUpdateForm: React.FC<ITaskFormProps> = ({ taskData }) => {
   const {
     handleSubmit,
     register,
@@ -82,7 +77,6 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({
     const { taskId, userId } = taskData;
     const updatedTask = { ...data, userId };
     updateTaskMutate({ taskData: updatedTask, taskId });
-    setModalOpen(false);
   };
 
   return (
@@ -134,7 +128,7 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({
         />
       </Stack>
       <Stack margin="30px 10px">
-        <Button type="submit" displayLabel="Update Task" />
+        <Button type="submit" displayLabel="Update" />
       </Stack>
       <DevTool control={control} />
     </form>

@@ -27,6 +27,7 @@ export const Item: React.FC<ItemProps> = ({ id, task }) => {
       }
     });
   const { modalOpen, setModalOpen } = useContext(AppContext);
+  const [selectedItem, setSelectedItem] = useState<Task | undefined>();
 
   return (
     <FlexWrapper flexDirection="row" height="100px" width="95%" margin="15px">
@@ -57,16 +58,15 @@ export const Item: React.FC<ItemProps> = ({ id, task }) => {
       >
         <span className="removeIcon">
           <span>
-            <Modal
-              setModalOpen={setModalOpen}
-              modalOpen={modalOpen}
-              type="icon"
-              icon={<IconPencil size={18} color="#7ab318" />}
-              content={
-                <TaskUpdateForm taskData={task} setModalOpen={setModalOpen} />
-              }
+            <IconPencil
+              size={18}
+              color="#7ab318"
+              onClick={() => {
+                task && setSelectedItem(task);
+              }}
             />
           </span>
+
           <span>
             <IconX
               color="red"
