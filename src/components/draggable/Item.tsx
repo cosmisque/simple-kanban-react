@@ -26,8 +26,7 @@ export const Item: React.FC<ItemProps> = ({ id, task }) => {
         queryClient.invalidateQueries(['user-tasks']);
       }
     });
-  const { modalOpen, setModalOpen } = useContext(AppContext);
-  const [selectedItem, setSelectedItem] = useState<Task | undefined>();
+  const { setModalOpen, setFormType, setSelectedTask } = useContext(AppContext);
 
   return (
     <FlexWrapper flexDirection="row" height="100px" width="95%" margin="15px">
@@ -62,7 +61,9 @@ export const Item: React.FC<ItemProps> = ({ id, task }) => {
               size={18}
               color="#7ab318"
               onClick={() => {
-                task && setSelectedItem(task);
+                setFormType('edit');
+                setModalOpen(true);
+                task && setSelectedTask(task);
               }}
             />
           </span>

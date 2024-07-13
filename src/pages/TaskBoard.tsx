@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -22,7 +22,8 @@ import { showSuccessToast } from '../utils/toast';
 import LoadingOverlay from 'react-loading-overlay-ts';
 import BounceLoader from 'react-spinners/BounceLoader';
 import FlexWrapper from '../components/styled/flex/FlexWrapper';
-
+import AppContext from '../context/AppContext';
+import TaskUpdateForm from '../forms/TaskUpdateForm';
 interface TaskBoardProps {
   tasks: TaskResponse;
   keyMap: HashMap;
@@ -30,6 +31,9 @@ interface TaskBoardProps {
 
 export const TaskBoard: React.FC<TaskBoardProps> = ({ tasks, keyMap }) => {
   const [items, setItems] = useState<TaskResponse>({});
+  const { formType, setFormType, setModalOpen, selectedTask, setSelectedTask } =
+    useContext(AppContext);
+
   const [activeId, setActiveId] = useState<string | null>();
   const taskTypeValues = Object.values(keyMap);
   const taskKeys = Object.keys(keyMap);
@@ -182,9 +186,22 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ tasks, keyMap }) => {
   return (
     <LoadingOverlay active={updateTaskIsLoading} spinner={<BounceLoader />}>
       <FlexWrapper>
+        <IconSquareRoundedPlus
+          style={{ top: '20px', left: '10px', position: 'relative' }}
+          color="#7ab318"
+          onClick={() => {
+            setFormType('create');
+            setModalOpen(true);
+          }}
+        />
         <Modal
-          icon={<IconSquareRoundedPlus color="#7ab318" />}
-          content={<TaskCreateForm />}
+          content={
+            formType === 'create' ? (
+              <TaskCreateForm />
+            ) : (
+              <TaskUpdateForm taskData={selectedTask} />
+            )
+          }
         />
         <FlexWrapper flexDirection="row">
           {taskTypeValues.map((type, index) => (

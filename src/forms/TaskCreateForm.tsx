@@ -4,7 +4,7 @@ import Input from '../components/styled/input/Input';
 import { useMutation } from '@tanstack/react-query';
 import { DevTool } from '@hookform/devtools';
 import { TaskInput } from '../types';
-import { createTask, updateTask } from '../api/taskApi';
+import { createTask } from '../api/taskApi';
 import { Button } from '../components/styled/button/Button';
 import Stack from '../components/styled/stack/Stack';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
@@ -14,6 +14,7 @@ import { SelectBox } from '../components/select/SelectBox';
 import AppContext from '../context/AppContext';
 import FlexWrapper from '../components/styled/flex/FlexWrapper';
 import FlexItem from '../components/styled/flex/FlexItem';
+
 interface ITaskFormProps {}
 interface IStatus {
   value: string;
@@ -31,7 +32,8 @@ const TaskCreateForm: React.FC<ITaskFormProps> = () => {
     handleSubmit,
     register,
     formState: { errors },
-    control
+    control,
+    reset
   } = useForm<TaskInput>({
     defaultValues: {
       name: '',
@@ -39,6 +41,8 @@ const TaskCreateForm: React.FC<ITaskFormProps> = () => {
       status: ''
     }
   });
+
+  const { setModalOpen } = useContext(AppContext);
 
   const { mutate } = useMutation(createTask, {
     onSuccess: () => {
@@ -53,6 +57,8 @@ const TaskCreateForm: React.FC<ITaskFormProps> = () => {
       userId: '293af5ec-5031-704f-f75a-366657c6fb7f'
     };
     mutate(data);
+    reset();
+    setModalOpen(false);
   };
 
   return (

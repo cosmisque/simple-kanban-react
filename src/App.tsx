@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
+
 import Home from './pages/Home';
 import Layout from './layout/Layout';
 import UserContext, { UserContextProvider } from './context/UserContext';
@@ -9,7 +9,6 @@ import { LoginForm } from './forms/LoginForm';
 import Theme from './provider/Theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ToastContainer } from 'react-toastify';
 import { QueryBoundaries } from './suspense/QueryBoundaries';
 import { Fragment, useContext } from 'react';
 import { type User } from './types';
@@ -20,7 +19,8 @@ import { useTheme } from 'styled-components';
 import { TaskBoard } from './pages/TaskBoard';
 import { KanbanBoard } from './pages/KabanBoard';
 import { queryClient } from './utils/queryClient';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <Fragment>
@@ -50,7 +50,7 @@ function App() {
               <ToastContainer
                 hideProgressBar={true}
                 toastStyle={{ backgroundColor: '#1a2332' }}
-                position="bottom-right"
+                position="top-right"
               />
               <ReactQueryDevtools
                 initialIsOpen={false}

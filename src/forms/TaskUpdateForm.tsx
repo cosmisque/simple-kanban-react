@@ -55,6 +55,8 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({ taskData }) => {
     }
   });
 
+  const { setModalOpen } = useContext(AppContext);
+
   useEffect(() => {
     if (!taskData) {
       return;
@@ -76,6 +78,7 @@ const TaskUpdateForm: React.FC<ITaskFormProps> = ({ taskData }) => {
 
     const { taskId, userId } = taskData;
     const updatedTask = { ...data, userId };
+    setModalOpen(false);
     updateTaskMutate({ taskData: updatedTask, taskId });
   };
 
